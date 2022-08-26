@@ -1,10 +1,9 @@
 from rest_framework.views import APIView
-from rest_framework import permissions, response, status
 
 
-class VideoView(APIView):
-    def get(self, request, **kwargs):
-        pass
+class VideoListView(APIView):
+    pass
 
-    def post(self, request, **kwargs):
-        pass
+
+class SearchVideoView(APIView):
+    pass
