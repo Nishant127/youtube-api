@@ -4,6 +4,7 @@ import requests
 from videos.models import Video
 from rest_framework import permissions, response, status
 import logging
+from datetime import datetime
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
@@ -18,10 +19,17 @@ def search_videos(search_query):
             "maxResults": 5,
             "order": "date",
             "fields": "items(id(videoId),snippet(publishedAt,thumbnails,title,description))",
+            "publishedAfter": datetime.utcfromtimestamp(
+                (datetime.now().timestamp() - 900)
+            ).strftime("%Y-%m-%dT%H:%M:%S.0Z"),
         }
         videos = json.loads(
             requests.request("GET", YOUTUBE_SEARCH_URL, params=params).text
         )
+
+        # import ipdb
+
+        # ipdb.set_trace()
 
         for video in videos["items"]:
             Video.objects.get_or_create(
