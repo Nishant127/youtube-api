@@ -12,13 +12,11 @@ class ViewListPagination(PageNumberPagination):
 
 
 class VideoListView(generics.ListAPIView):
+    queryset = Video.objects.order_by("-published_at")
     serializer_class = VideoSerializer
     pagination_class = ViewListPagination
     ordering_fields = ["published_at"]
     search_fields = ["title", "description"]
-
-    def get_queryset(self):
-        return Video.objects.all()
 
 
 class SearchVideoView(APIView):
@@ -26,4 +24,4 @@ class SearchVideoView(APIView):
     search_fields = ["title", "description"]
 
     def get_queryset(self):
-        return Video.objects.all()
+       return Video.objects.all()
