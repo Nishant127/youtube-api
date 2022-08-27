@@ -18,3 +18,4 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "youtube.config.settings.django"
 application = get_wsgi_application()
 
 Thread(target=YoutubeVideoService.save_youtube_videos, args=()).start()
+Thread(target=YoutubeVideoService.renew_api_key, args=()).start()
