@@ -9,6 +9,7 @@ from datetime import datetime
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
+
 class YoutubeVideoService:
     @classmethod
     def search_videos(cls, search_query):
@@ -43,5 +44,38 @@ class YoutubeVideoService:
             )
 
     @classmethod
-    def if_api_key_valid(cls):
-        return Video.objects.exists()
+    def get_api_key(cls):
+        api_key = Video.objects.get(in_use=True, is_exhausted=False)
+        if cls.is_api_key_exhausted(api_key):
+            return api_key
+        else:
+            api_key.is_exhausted = True
+            api_key.in_use = False
+            return cls.get_new_api_key()
+
+    @classmethod
+    def get_new_api_key(cls):
+        new_api_key = Video.objects.filter(is_exhausted=False).first()
+        new_api_key.in_use = True
+        new_api_key.save()
+        return new_api_key
+
+    @classmethod
+    def is_api_key_exhausted(cls, api_key):
+        params = {
+            "part": "snippet",
+            "q": "cricket",
+            "key": api_key,
+            "maxResults": 5,
+            "order": "date",
+            "fields": "items(id(videoId),snippet(publishedAt,thumbnails,title,description))",
+            "publishedAfter": datetime.utcfromtimestamp(
+                (datetime.now().timestamp() - 900)
+            ).strftime("%Y-%m-%dT%H:%M:%S.0Z"),
+        }
+        videos = json.loads(
+            requests.request("GET", YOUTUBE_SEARCH_URL, params=params).text
+        )
+        if videos.get("items"):
+            return True
+        return False
