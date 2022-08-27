@@ -19,5 +19,5 @@ from youtube.apps.videos.api.urls import urlpatterns as video_urls
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("videos/", include(video_urls), name="videos"),
+    path("youtube/", include(video_urls), name="videos"),
 ]

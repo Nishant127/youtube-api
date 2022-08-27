@@ -3,7 +3,7 @@ from celery import shared_task
 from datetime import datetime
 import json
 import requests
-from youtube.config.settings.django import YOUTUBE_SEARCH_URL, YOUTUBE_API_KEY
+from youtube.config.settings.django import YOUTUBE_SEARCH_URL
 import logging
 from videos.models import Video
 
@@ -55,6 +55,7 @@ def search_videos(api_key):
             )
             nextPageToken = videos.get("nextPageToken")
             all_videos = all_videos + videos["items"]
-        Thread(target=save_videos, args=(all_videos,)).start()
+        save_videos(all_videos)
+        # Thread(target=save_videos, args=(all_videos,)).start()
     except Exception as e:
         logging.info("Youtube API call failed")

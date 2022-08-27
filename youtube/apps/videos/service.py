@@ -1,4 +1,4 @@
-from youtube.config.settings.django import YOUTUBE_SEARCH_URL, YOUTUBE_API_KEY
+from youtube.config.settings.django import YOUTUBE_SEARCH_URL
 import json
 import requests
 from videos.models import Video, APIKey
