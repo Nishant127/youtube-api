@@ -9,6 +9,7 @@ django-environ = "*"
 psycopg2-binary = "*"
 djangorestframework = "*"
 requests = "*"
+celery = "*"
 
 [dev-packages]
 

@@ -35,4 +35,4 @@ class APIKey(TimeStampedModel):
         verbose_name_plural = _("API Keys")
 
     def __str__(self):
-        return self.key
+        return f"{self.key}-{self.in_use}"
