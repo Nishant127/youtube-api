@@ -22,3 +22,15 @@ class Video(TimeStampedModel):
 
     def __str__(self):
         return self.title
+
+class APIKey(TimeStampedModel):
+
+    key = models.CharField(_("Key"), max_length=255, unique=True)
+    priority = models.IntegerField(_("Priority"), default=0)
+
+    class Meta:
+        verbose_name = _("API Key")
+        verbose_name_plural = _("API Keys")
+
+    def __str__(self):
+        return self.key 

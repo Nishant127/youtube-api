@@ -26,18 +26,17 @@ def search_videos(search_query):
         videos = json.loads(
             requests.request("GET", YOUTUBE_SEARCH_URL, params=params).text
         )
-
-        # import ipdb
-
-        # ipdb.set_trace()
-
-        for video in videos["items"]:
-            Video.objects.get_or_create(
-                video_id=video["id"]["videoId"],
-                title=video["snippet"]["title"],
-                description=video["snippet"]["description"],
-                thumbnail=video["snippet"]["thumbnails"],
-                published_at=video["snippet"]["publishedAt"],
-            )
+        save_videos(videos["items"])
     except Exception as e:
         logging.info("API call failed")
+
+
+def save_videos(videos):
+    for video in videos:
+        Video.objects.get_or_create(
+            video_id=video["id"]["videoId"],
+            title=video["snippet"]["title"],
+            description=video["snippet"]["description"],
+            thumbnail=video["snippet"]["thumbnails"],
+            published_at=video["snippet"]["publishedAt"],
+        )
