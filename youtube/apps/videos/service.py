@@ -32,9 +32,12 @@ class YoutubeVideoService:
     @classmethod
     def get_new_api_key(cls):
         new_api_key = APIKey.objects.filter(is_exhausted=False).first()
-        new_api_key.in_use = True
-        new_api_key.save()
-        return new_api_key.key
+        if new_api_key:
+            new_api_key.in_use = True
+            new_api_key.save()
+            return new_api_key.key
+        else:
+            logger.info("No API key available")
 
     @classmethod
     def is_api_key_exhausted(cls, api_key):
@@ -46,15 +49,15 @@ class YoutubeVideoService:
             "order": "date",
             "fields": "items(id(videoId),snippet(publishedAt,thumbnails,title,description))",
             "publishedAfter": datetime.utcfromtimestamp(
-                (datetime.now().timestamp() - 900)
+                (datetime.now().timestamp())
             ).strftime("%Y-%m-%dT%H:%M:%S.0Z"),
         }
         videos = json.loads(
             requests.request("GET", YOUTUBE_SEARCH_URL, params=params).text
         )
-        if videos.get("items"):
-            return False
-        return True
+        if videos.get("error"):
+            return True
+        return False
 
     @classmethod
     def save_youtube_videos(cls):

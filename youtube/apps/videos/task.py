@@ -16,10 +16,11 @@ def save_videos(videos):
         for video in videos:
             Video.objects.get_or_create(
                 video_id=video["id"]["videoId"],
-                title=video["snippet"]["title"],
-                description=video["snippet"]["description"],
-                thumbnail=video["snippet"]["thumbnails"],
-                published_at=video["snippet"]["publishedAt"],
+                defaults ={
+                "title":video["snippet"]["title"],
+                "description":video["snippet"]["description"],
+                "thumbnail":video["snippet"]["thumbnails"],
+                "published_at":video["snippet"]["publishedAt"]}
             )
         logger.info("Saved videos in the database")
     except Video.DoesNotExist:
@@ -40,7 +41,7 @@ def search_videos(api_key):
             "fields": "items(id(videoId),snippet(publishedAt,thumbnails,title,description))",
             "pageToken": "",
             "publishedAfter": datetime.utcfromtimestamp(
-                (datetime.now().timestamp() - 900)
+                (datetime.now().timestamp() - 600)
             ).strftime("%Y-%m-%dT%H:%M:%S.0Z"),
         }
         videos = json.loads(
@@ -55,7 +56,6 @@ def search_videos(api_key):
             )
             nextPageToken = videos.get("nextPageToken")
             all_videos = all_videos + videos["items"]
-        save_videos(all_videos)
-        # Thread(target=save_videos, args=(all_videos,)).start()
+        Thread(target=save_videos, args=(all_videos,)).start()
     except Exception as e:
         logging.info("Youtube API call failed")
