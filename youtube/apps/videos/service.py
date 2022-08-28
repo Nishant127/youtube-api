@@ -59,7 +59,7 @@ class YoutubeVideoService:
     @classmethod
     def save_youtube_videos(cls):
         while True:
-            time.sleep(10)
+            time.sleep(60)
             api_key = cls.get_api_key()
             Thread(target=search_videos, args=(api_key,)).start()
 
@@ -72,7 +72,7 @@ class YoutubeVideoService:
                 time_elapsed = (
                     datetime.now().timestamp() - api_key.updated_at.timestamp()
                 )
-                if time_elapsed >= 400:
+                if time_elapsed >= 86400:
                     api_key.is_exhausted = False
                     api_key.save()
                     logger.info("API key renewed")
