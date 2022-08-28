@@ -10,7 +10,7 @@ from videos.models import Video
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
-
+# Method to save youtube video details in the database
 def save_videos(videos):
     try:
         for video in videos:
@@ -26,7 +26,7 @@ def save_videos(videos):
     except Video.DoesNotExist:
         logger.info("Error in saving videos in the database")
 
-
+# Method to search latest videos for predefined search query from YouTube using Youtube search API
 @shared_task
 def search_videos(api_key):
     try:
