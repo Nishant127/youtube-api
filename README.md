@@ -38,7 +38,7 @@ Create Database named `youtube_db` from Postgres console.
 - Support for supplying multiple API keys so that if quota is exhausted on one, automatically the next available key is used.
 
 # Note
-- Before running server add atleast one Youtube API key should be added in the database using the endpoint `http://localhost:8000/youtube/api-key/`. 
+- Before running server atleast one Youtube API key should be added in the database using the endpoint `http://localhost:8000/youtube/api-key/`. 
 
 
 # API Enpoints
