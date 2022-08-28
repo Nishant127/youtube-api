@@ -34,7 +34,10 @@ class APIKeyView(APIView):
             if not APIKey.objects.exists():
                 APIKey.objects.create(key=api_key, in_use=True)
             else:
-                APIKey.objects.create(key=api_key)
+                if APIKey.objects.filter(in_use=True).exists():
+                    APIKey.objects.create(key=api_key)
+                else:
+                    APIKey.objects.create(key=api_key, in_use=True)
             return response.Response(
                 data="API key added successfully", status=status.HTTP_200_OK
             )
