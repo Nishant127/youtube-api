@@ -7,26 +7,20 @@
 - Python >= 3.8 🐍
 - Postgres 🐘
 
-### 🗄️ Database Setup: 
-
-Create Database named `youtube_db` from Postgres console. 
-
 ### 👨‍💻 Project Setup: 
 
 - Clone this repository
-- `$ cd youtube-api`
-- Enter the shell by typing `$ pipenv shell`
-- Install dependencies by typing `$ pipenv install`
-- Complete the steps mentioned in **Environment variables** section
-- Run migrations `$ python manage.py migrate`
-- Run local server `$ python manage.py runserver`
+- Enter the shell by typing `$ docker build .`
+- Build the docker compose `$ docker -compose build`
+- Run the `$ docker-compose up` command to start the service.
+- And then run migrations `$ docker-compose exec web python manage.py migrate`
+- Also create the super user `$ docker-compose exec web python manage.py createsuperuser`
 
 ### 🔐 Environment variables: 
 
 - Create file `.env` inside `youtube-api` directory
 - Copy contents from `.env.example` file and paste it in the `.env` file you just created.
-- After copying the contents, edit the `SECRET_KEY`, `DATABASE_USER` and `DATABASE_PASSWORD` with your respective key, user and password.
-- In `DATABASE_URL`,  replace `your_database_user` and `your_database_password` with your respective Database User and Password.
+- After copying the contents, edit the `SECRET_KEY`.
 
 
 # Functionality
