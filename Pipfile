@@ -8,6 +8,10 @@ django = "*"
 django-environ = "*"
 psycopg2-binary = "*"
 djangorestframework = "*"
+requests = "*"
+celery = "*"
+psycopg2 = "*"
+ipdb = "*"
 
 [dev-packages]
 

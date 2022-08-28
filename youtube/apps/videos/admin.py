@@ -1,3 +1,6 @@
+from re import A
 from django.contrib import admin
+from videos.models import Video, APIKey
 
-# Register your models here.
+admin.site.register(Video)
+admin.site.register(APIKey)
