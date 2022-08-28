@@ -14,6 +14,7 @@ logger = logging.getLogger()
 
 
 class YoutubeVideoService:
+    # Method to get YouTube API key
     @classmethod
     def get_api_key(cls):
         try:
@@ -29,6 +30,7 @@ class YoutubeVideoService:
         except APIKey.DoesNotExist:
             logger.info("No API key available, all API keys are exhausted")
 
+    # Method to get new YouTube API key, if the current API key is exhausted
     @classmethod
     def get_new_api_key(cls):
         new_api_key = APIKey.objects.filter(is_exhausted=False).first()
@@ -39,6 +41,7 @@ class YoutubeVideoService:
         else:
             logger.info("No API key available")
 
+    # Method to check if API key is exhausted
     @classmethod
     def is_api_key_exhausted(cls, api_key):
         params = {
@@ -59,6 +62,7 @@ class YoutubeVideoService:
             return True
         return False
 
+    # Method to fetch latest videos from YouTube and save in the database at an interval of 1 minute
     @classmethod
     def save_youtube_videos(cls):
         while True:
@@ -66,6 +70,7 @@ class YoutubeVideoService:
             api_key = cls.get_api_key()
             Thread(target=search_videos, args=(api_key,)).start()
 
+    # Method to renew exhausted YouTube API key
     @classmethod
     def renew_api_key(cls):
         while True:

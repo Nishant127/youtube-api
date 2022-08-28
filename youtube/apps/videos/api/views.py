@@ -12,6 +12,8 @@ class ViewListPagination(PageNumberPagination):
 
 
 class VideoListView(generics.ListAPIView):
+    """Use this endpoint to retrieve a list of videos"""
+
     queryset = Video.objects.order_by("-published_at")
     serializer_class = VideoSerializer
     pagination_class = ViewListPagination
@@ -20,6 +22,8 @@ class VideoListView(generics.ListAPIView):
 
 
 class SearchVideoView(generics.ListAPIView):
+    """Use this endpoint to retrieve a list of videos w.r.t to search query"""
+
     serializer_class = VideoSerializer
     search_fields = ["title", "description"]
 
@@ -28,6 +32,8 @@ class SearchVideoView(generics.ListAPIView):
 
 
 class APIKeyView(APIView):
+    """Use this endpoint store new Youtube API key"""
+
     def post(self, request):
         api_key = request.data.get("api_key")
         try:
