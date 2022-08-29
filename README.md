@@ -11,8 +11,9 @@
 ### 👨‍💻 Project Setup: 
 
 - Clone this repository
+- Setup the .env file.
 - Enter the shell by typing `$ docker build .`
-- Build the docker compose `$ docker -compose build`
+- Build the docker compose `$ docker-compose build`
 - Run the `$ docker-compose up` command to start the service.
 - And then run migrations `$ docker-compose exec web python manage.py migrate`
 - Also create the super user `$ docker-compose exec web python manage.py createsuperuser`
@@ -22,6 +23,11 @@
 - Create file `.env` inside `youtube-api` directory
 - Copy contents from `.env.example` file and paste it in the `.env` file you just created.
 - After copying the contents, edit the `SECRET_KEY`.
+  - You can generate SECRET_KEY using `get_random_secret_key` method.
+  - Run `$ django-admin shell` in the terminal.
+  - Enter `$ from django.core.management.utils import get_random_secret_key ` to import the method.
+  - And then enter `$ secret_key = get_random_secret_key()` to generate the secret key.
+  - You can now use the generated value as our SECRET_KEY.
 
 
 # Functionality
@@ -29,11 +35,11 @@
 - Server call the YouTube API continuously in background (async) with some interval (say 10 seconds)
 - The latest videos are stored in the database.
 - A GET API which returns the stored video data in a paginated response sorted in descending order of published datetime.
-- A serch API to search the stored videos using their title and description.
+- A search API to search the stored videos using their title and description.
 - Support for supplying multiple API keys so that if quota is exhausted on one, automatically the next available key is used.
 
 # Note
-- Before running server atleast one Youtube API key should be added in the database using the endpoint `http://localhost:8000/youtube/api-key/`. 
+- Atleast one Youtube API key should be added in the database using the endpoint `http://localhost:8000/youtube/api-key/` to fetch and save the video details. 
 
 
 # API Enpoints
@@ -53,7 +59,7 @@ http://127.0.0.1:8000/youtube/api-key/
 "API key added successfully"
 ```
 ### 2. API to get stored youtube videos.
-#### *Get API will return paginated JSON response descending order of published datetime.*
+#### *Get API will return paginated JSON response in descending order of the published datetime.*
 
 ``` 
 http://127.0.0.1:8000/youtube/videos/
@@ -146,10 +152,10 @@ http://127.0.0.1:8000/youtube/videos/
     ]
 }
 ```
-### 3. API to search the stored videos using their title and description
-#### Get request with query param `search=virat`
+### 3. API to search the stored videos using their title and description.
+#### Get request with query param eg:`search=virat` will return response related to the search query.
 ```
-http://127.0.0.1:8000/youtube/serach/
+http://127.0.0.1:8000/youtube/search/
 ```
 - **Response**
 ```json
